@@ -46,6 +46,18 @@ component_df.index = [f'PC{i+1}' for i in range(len(component_df))]
 component_df.to_csv(os.path.join(output_dir, 'pca_component_weights.csv'))
 print("PCA Component Weights:\n", component_df)
 
+# Crear gráficos individuales de barras para cada componente PCA
+for i in range(component_df.shape[0]):
+    plt.figure(figsize=(10, 6))
+    sorted_weights = component_df.iloc[i].sort_values()
+    sorted_weights.plot(kind='barh', color='skyblue')
+    plt.title(f'Feature Importance in {component_df.index[i]}')
+    plt.xlabel('Weight (Loading)')
+    plt.tight_layout()
+    plt.savefig(os.path.join(output_dir, f'pca_weights_{component_df.index[i]}.png'))
+    plt.close()
+
+
 # Visual heatmap of feature contributions
 plt.figure(figsize=(12, 8))
 sns.heatmap(component_df, cmap="coolwarm", center=0)
